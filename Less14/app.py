@@ -15,23 +15,19 @@ def main():
 
     # lat = st.number_input("Inserisci la latitudine", value=44.498955, format="%6f")
     # long = st.number_input("Inserisci la longitudine", value=11.327591, format="%6f")
-
     data_inizio = st.date_input("Inserisci la data di inizio", date(2019,7,6))
-
     data_fine = st.date_input("Inserisci la data di fine", date(2023,5,17))
 
     start = datetime(data_inizio.year, data_inizio.month, data_inizio.day)
     end = datetime(data_fine.year, data_fine.month, data_fine.day)
 
     cities = {citta:[location.latitude,location.longitude]}
-
-    # Create Point for Vancouver, BC
     city = Point(list(cities.values())[0][0],list(cities.values())[0][1], 20)
 
-    # Get daily data for 2018
     df = Daily(city, start, end)
     df = df.fetch()
     df['city'] = list(cities.keys())[0]
+
 
     fig = go.Figure()
     #Actual 
@@ -76,6 +72,5 @@ def main():
     st.plotly_chart(fig)
     st.map(pd.DataFrame({'lat' : [location.latitude] , 'lon' : [location.longitude]},columns = ['lat','lon']))
 
-# questo modulo sarà eseguito solo se runnato
 if __name__ == "__main__":
     main()
