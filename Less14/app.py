@@ -1,24 +1,13 @@
-# importo tutte le librerie necessarie
 import streamlit as st
 import pandas as pd
-import toml
 from datetime import datetime, date
-import matplotlib.pyplot as plt
 from meteostat import Point, Daily
 import pandas as pd
 import plotly.graph_objects as go
 from geopy.geocoders import Nominatim
 
-
-# implemento la funzione main
 def main():
-
-    # file per settare colori di sfondo e testo
-    with open('.streamlit/config.toml', 'r') as f:
-        config = toml.load(f)
-
     st.header("Weather")
-
     citta = st.text_input("Inserisci il nome della città", value="Bologna")
 
     geolocator = Nominatim(user_agent="Your_name")
@@ -45,7 +34,6 @@ def main():
     df['city'] = list(cities.keys())[0]
 
     fig = go.Figure()
-
     #Actual 
     fig.add_trace(go.Scatter(x = df.index, 
                             y = df['tavg'],
@@ -64,9 +52,9 @@ def main():
 
     ##############################################################
     # adjust layout
-    fig.update_layout(title = "Titolo",
+    fig.update_layout(title = f"Temperatura di {citta} dal  {start.date()}  al {end.date()}",
                     xaxis_title = "Date",
-                    yaxis_title = "Sales",
+                    yaxis_title = "Temperature °C",
                     width = 1700,
                     height = 700,
                     )
@@ -77,7 +65,7 @@ def main():
         rangeselector=dict(
             buttons=list([
                 dict(count=1, label="1y", step="year", stepmode="backward"),
-                dict(count=2, label="3y", step="year", stepmode="backward"),
+                dict(count=3, label="3y", step="year", stepmode="backward"),
                 dict(count=10, label="10y", step="year", stepmode="backward"),
                 dict(step="all")
             ])
@@ -87,8 +75,6 @@ def main():
     fig.update_layout(width=850)
     st.plotly_chart(fig)
     st.map(pd.DataFrame({'lat' : [location.latitude] , 'lon' : [location.longitude]},columns = ['lat','lon']))
-
-    
 
 # questo modulo sarà eseguito solo se runnato
 if __name__ == "__main__":
