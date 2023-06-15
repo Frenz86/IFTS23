@@ -2,10 +2,10 @@ import streamlit as st
 import pandas as pd
 import requests
 from datetime import datetime , timedelta
-
 import os
 from dotenv import load_dotenv
-load_dotenv('.env')
+
+load_dotenv() #load by default .env file
 api_key : str = os.getenv('API_KEY')
 
 #URL
